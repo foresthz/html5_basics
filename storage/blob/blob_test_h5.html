@@ -1,0 +1,12 @@
+
+<script type="text/javascript">
+
+var data="<h3>菜根谭</h3> <font color='red'>作人要脱俗，不可存一矫俗之心<font>";
+var blob = new Blob([data], {type:'text/html'});
+var frame1 = document.createElement("iframe");
+frame1.src = URL.createObjectURL(blob);
+
+onload = function() {
+	document.body.appendChild(frame1);
+}
+</script>

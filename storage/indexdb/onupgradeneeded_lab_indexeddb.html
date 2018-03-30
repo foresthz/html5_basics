@@ -1,0 +1,35 @@
+
+<script type="text/javascript">
+
+</script>
+
+<style type="text/css">
+
+</style>
+
+<div class="main">
+	<div class="row">
+		<div class="p1"></div>
+		<button id="btn1"></button>
+	</div>
+	<div class="row">
+		<div class="p2"></div>
+		<button id="btn2"></button>
+	</div>
+	<div class="row">
+		<div class="p3"></div>
+		<button id="btn3"></button>
+	</div>
+	<div class="row">
+		<div class="p4"></div>
+		<button id="btn4"></button>
+	</div>
+	<div class="row">
+		<div class="p5"></div>
+		<button id="btn5"></button>
+	</div>
+</div>
+
+
+.main>(.row>div.p$)*5
+.main>(.row>div.p$+button[id=btn$])*5

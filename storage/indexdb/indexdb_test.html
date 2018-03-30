@@ -1,0 +1,69 @@
+
+<script type="text/javascript">
+// alert('hi');
+
+const idb = window.indexedDB;
+const request = idb.open('vone_db5', 3);
+
+var mydb, mytransaction, mystore;
+
+function printobj(obj) {
+	console.info('begin ----------------------------')
+	for (var key in obj) {
+		console.info(key, ': ', obj[key]);
+	}
+	console.info('end -------------------------------')
+}
+
+request.addEventListener('success', function(event){
+	// alert(event);
+	// printobj(event);
+	console.info('success');
+	const db = event.target.result;
+	mydb = db;
+	console.info('db version: ', db.version);
+	// db.createObjectStore('vone_urls');
+	var transaction = db.transaction('vone_urls', 'readwrite');
+	// mytransaction = transaction;
+	var store = transaction.objectStore('vone_urls');
+	store.put({a:Math.random()}, '11')
+	console.info(store.get('11'));
+	mystore = store;
+
+	var cursor = store.openCursor();
+	cursor.onsuccess = function(event) {
+		console.info('open cursor success');
+		var res = event.target.result;
+		if(res) {
+			console.info(res);
+			console.info(res.key, ' : ', res.value);
+			res.continue();
+		}
+	}
+	// return db;
+}, false);
+
+request.addEventListener('error', function(event){
+	console.info('error');
+	alert(event.target.errorCode);
+}, false);
+
+function createDB(e, name) {
+	var db = e.target.result;
+	if(!db.objectStoreNames.contains(name)) {
+		db.createObjectStore(name);
+	}
+}
+
+request.addEventListener('upgradeneeded', function(event) {
+	alert('upgrade needed');
+	console.info('upgrade needed');
+	db = event.target.result;
+	if (!db.objectStoreNames.contains('vone_urls')) {
+		db.createObjectStore('vone_urls');
+
+	}
+	createDB(event, 'vone_urls2');
+}, false);
+
+</script>
