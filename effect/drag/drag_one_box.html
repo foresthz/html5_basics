@@ -1,0 +1,98 @@
+
+<style>
+body {padding:10px}
+#drag_node_a {
+  width:80px;
+  z-index: 10;
+  height:50px;
+  background-color:yellow;
+  color:red;
+  float: left;
+  padding:6px 12px;
+  cursor:move;
+  position:relative; /* important (all position that's not `static`) */
+}
+
+#hr1{
+    width: 1px;
+    z-index: 9 !important;
+}
+
+#vertical {
+    width: 1px;
+    height: 400px;
+    position: absolute;
+    top: 2em;
+    left: 350;;
+    background: red;
+}
+
+#hr2 {
+    width: 80%;
+    /* border无效,只能用border-color */
+    border-color: fuchsia;
+    /* border-color: green; */
+}
+</style>
+
+<div id="drag_node_a">Drag A</div>
+
+
+<!-- <hr> -->
+<!-- <hr id="hr1" size="100"> -->
+<hr id="hr1" size="100">
+<div id="vertical"></div>
+
+<hr id="hr2" style="color:red">
+
+<script>
+var selected = null, // Object of the element to be moved
+    x_pos = 0, y_pos = 0, // Stores x & y coordinates of the mouse pointer
+    x_elem = 0, y_elem = 0; // Stores top, left values (edge) of the element
+
+// Will be called when user starts dragging an element
+function init_drag(elem) {
+    // Store the object of the element which needs to be moved
+    selected = elem;
+    x_elem = x_pos - selected.offsetLeft;
+    y_elem = y_pos - selected.offsetTop;
+}
+
+// Will be called when user dragging an element
+function move_block(e) {
+    x_pos = document.all ? window.event.clientX : e.pageX;
+    y_pos = document.all ? window.event.clientY : e.pageY;
+    if (selected !== null) {
+        // debugger;
+        selected.style.left = (x_pos - x_elem) + 'px';
+        selected.style.top = (y_pos - y_elem) + 'px';
+        if(e.clientX>350) {
+            selected.style.backgroundColor="pink";
+        } else {
+            selected.style.backgroundColor='yellow';
+        }
+    }
+}
+
+// Destroy the object when we are done
+function mouseup(e) {
+    if(selected == null) {
+        alert(`current position: ${e.clientX},${e.clientY}`)
+    }
+    if(e.clientX>350) {
+        alert('超过红线');
+    }
+    selected = null;
+    // debugger;
+}
+
+// Bind the functions ...
+document.getElementById('drag_node_a').onmousedown = function (e) {
+    init_drag(e.target);
+    // init_drag(this);
+    return false;
+};
+
+document.onmousemove = move_block;
+document.onmouseup = mouseup;
+</script>
