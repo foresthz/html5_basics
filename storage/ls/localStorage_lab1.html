@@ -1,0 +1,16 @@
+
+
+<script>
+localStorage['name000']='1234';
+
+let _getItem = localStorage.__proto__.getItem;
+localStorage.__proto__.getItem = function(key) {
+    console.info('invoke modified version of getItem#localStorage');
+    return _getItem.call(this, key);
+}
+
+console.info(localStorage.getItem('name000'));
+
+console.info(localStorage['name000']);
+
+</script>

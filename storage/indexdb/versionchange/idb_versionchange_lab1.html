@@ -1,0 +1,78 @@
+<title>
+
+    VersionChangeEvent Lab1</title>
+
+
+<label for="dbName">dbName: </label><input type="text" id="dbName">
+<label for="version">version: </label> <input type="text" id="version">
+<label for="storeName">storeName: </label> <input type="text" id="storeName">
+<hr>
+
+<button id="btn_createdb">创建数据库</button>
+<button id="btn_updatedb">升级数据库</button>
+<button id="btn_deletedb">删除数据库</button>
+<button id="btn_save_data">保存数据</button>
+
+<script>
+
+    let btn_createdb = document.getElementById('btn_createdb');
+    let btn_updatedb = document.getElementById('btn_updatedb');
+    let btn_deletedb = document.getElementById('btn_deletedb');
+    let btn_save_data = document.getElementById('btn_save_data');
+
+    class EventChangeManager {
+        createdb(dbName = 'hellodb', version = 2) {
+            let request = indexedDB.open(dbName, version);
+            request.onsuccess = function (event) {
+                debugger;
+            }
+            // if db is already there, larger version will trigger upgradeneeded event
+            request.onupgradeneeded = function (event) {
+                let db = event.target.result;
+                debugger;
+            }
+        }
+
+        save(dbName = 'hellodb', storeName = 'hellostore', obj) {
+            let request = indexedDB.open(dbName);
+            request.onsuccess = function (event) {
+                let db = event.target.result;
+                // transaction could use more than one object stores
+                let transaction = db.transaction(storeName, "readwrite");
+                let store = transaction.objectStore(storeName);
+                debugger;
+            }.bind({obj});
+        }
+    }
+
+    let manager = new EventChangeManager();
+    btn_createdb.addEventListener('click', function () {
+        let dbName = document.getElementById('dbName').value;
+        dbName = dbName == "" ? undefined : dbName;
+        let version = document.getElementById('version').value;
+        version = version == "" ? undefined : version;
+        debugger;
+        manager.createdb(dbName, version);
+    });
+
+    btn_save_data.addEventListener('click', function () {
+
+        let dbName = document.getElementById('dbName').value;
+        dbName = dbName == "" ? undefined : dbName;
+        let storeName = document.getElementById('storeName').value;
+        storeName = storeName == ""? undefined : storeName;
+
+        debugger;
+        manager.save(dbName, storeName, {
+            name:'default',
+            value:Math.random()
+        });
+    });
+
+</script>
+
+<style>
+    #btn_save_data {
+        color: darkorange;
+    }
+</style>

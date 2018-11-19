@@ -1,0 +1,14 @@
+<script>
+    class IDBManager {
+        createDB() {
+            let request = indexedDB.open('hellodb', 2);
+            request.onsuccess = function (event) {
+                debugger;
+            }.bind({request});
+        }
+    }
+
+    let manager = new IDBManager();
+    manager.createDB();
+
+</script>
